@@ -33,6 +33,7 @@ export interface MockData {
 
 export interface EmailSenderState {
     selectedTemplate: string;
+    customTemplateId: string;
     isLoading: boolean;
     mockData: MockData | null;
     isEditingJson: boolean;

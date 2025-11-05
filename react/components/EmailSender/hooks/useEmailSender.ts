@@ -11,6 +11,7 @@ export const useEmailSender = () => {
 
     const sendEmail = useCallback(async (
         selectedTemplate: string,
+        customTemplateId: string,
         mockData: MockData | null
     ) => {
         if (!selectedTemplate || !mockData) {
@@ -20,18 +21,29 @@ export const useEmailSender = () => {
             return false
         }
 
+        // Para template customizado, verificar se o ID foi fornecido
+        if (selectedTemplate === 'custom' && !customTemplateId.trim()) {
+            toast({
+                message: 'Digite o ID do template customizado',
+            })
+            return false
+        }
+
         setIsLoading(true)
 
         try {
+            // Usar o customTemplateId se for template customizado, senão usar selectedTemplate
+            const templateToUse = selectedTemplate === 'custom' ? customTemplateId : selectedTemplate
+
             const response = await fetch('/_v/email/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    templateName: selectedTemplate,
+                    templateName: templateToUse,
                     recipient: mockData.email || mockData.customerEmail || 'gabriel.strieder@corebiz.ag',
-                    subject: mockData.subject || `Template: ${selectedTemplate}`,
+                    subject: mockData.subject || `Template: ${templateToUse}`,
                     mockData,
                 }),
             })

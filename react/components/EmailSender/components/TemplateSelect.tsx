@@ -12,13 +12,17 @@ interface TemplateSelectProps {
         IsDefaultTemplate: boolean;
     }>;
     isLoadingTemplates: boolean;
+    customTemplateId: string;
+    onCustomTemplateIdChange: (id: string) => void;
 }
 
 export const TemplateSelect: React.FC<TemplateSelectProps> = ({
     selectedTemplate,
     onTemplateChange,
     availableTemplates,
-    isLoadingTemplates
+    isLoadingTemplates,
+    customTemplateId,
+    onCustomTemplateIdChange
 }) => {
     return (
         <div style={{ marginBottom: '32px' }}>
@@ -62,6 +66,9 @@ export const TemplateSelect: React.FC<TemplateSelectProps> = ({
                 <option value="">
                     {isLoadingTemplates ? 'Carregando templates...' : 'Selecione um template...'}
                 </option>
+                <option value="custom">
+                    🛠️ Template Customizado
+                </option>
                 {!isLoadingTemplates && availableTemplates.map(template => (
                     <option key={template.Name} value={template.Name}>
                         {template.FriendlyName}
@@ -70,6 +77,46 @@ export const TemplateSelect: React.FC<TemplateSelectProps> = ({
                     </option>
                 ))}
             </select>
+
+            {selectedTemplate === 'custom' && (
+                <div style={{ marginTop: '16px' }}>
+                    <label style={{
+                        display: 'block',
+                        marginBottom: '8px',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        color: '#142032'
+                    }}>
+                        🔧 ID do Template Customizado
+                    </label>
+                    <input
+                        type="text"
+                        value={customTemplateId}
+                        onChange={(e) => onCustomTemplateIdChange(e.target.value)}
+                        placeholder="Ex: vtexcommerce-new-order, my-custom-template..."
+                        style={{
+                            width: '100%',
+                            padding: '12px 16px',
+                            borderRadius: '8px',
+                            border: '2px solid #e3e4e6',
+                            fontSize: '14px',
+                            backgroundColor: 'white',
+                            transition: 'border-color 0.2s',
+                            outline: 'none'
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = '#0c389f'}
+                        onBlur={(e) => e.target.style.borderColor = '#e3e4e6'}
+                    />
+                    <div style={{ 
+                        marginTop: '4px', 
+                        fontSize: '12px', 
+                        color: '#666',
+                        fontStyle: 'italic'
+                    }}>
+                        💡 Digite o ID exato do template do Message Center que deseja testar
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

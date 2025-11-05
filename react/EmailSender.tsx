@@ -31,6 +31,7 @@ const [ThemeProvider] = createSystem({
 function EmailSenderContent() {
     // Estados principais
     const [selectedTemplate, setSelectedTemplate] = useState('')
+    const [customTemplateId, setCustomTemplateId] = useState('')
     const [mockData, setMockData] = useState<MockData | null>(null)
     const [availableTemplates, setAvailableTemplates] = useState<LegacyEmailTemplate[]>([])
     const [isLoadingTemplates, setIsLoadingTemplates] = useState(false)
@@ -66,25 +67,32 @@ function EmailSenderContent() {
     // Atualizar dados mockados quando template mudar
     useEffect(() => {
         if (selectedTemplate) {
-            try {
-                // Tentar usar dados mockados específicos do template
-                const templateData = getCompleteTemplateData(selectedTemplate)
-                setMockData(templateData.mockData)
-            } catch (error) {
-                console.warn(`Template mockado não encontrado para ${selectedTemplate}, usando dados genéricos`)
-                // Fallback para dados genéricos
+            if (selectedTemplate === 'custom') {
+                // Para template customizado, gerar dados básicos e permitir edição manual
                 const data = generateMockData()
                 setMockData(data)
+            } else {
+                try {
+                    // Tentar usar dados mockados específicos do template
+                    const templateData = getCompleteTemplateData(selectedTemplate)
+                    setMockData(templateData.mockData)
+                } catch (error) {
+                    console.warn(`Template mockado não encontrado para ${selectedTemplate}, usando dados genéricos`)
+                    // Fallback para dados genéricos
+                    const data = generateMockData()
+                    setMockData(data)
+                }
             }
         }
     }, [selectedTemplate])
 
     // Handlers
     const handleSendEmail = async () => {
-        const success = await sendEmail(selectedTemplate, mockData)
+        const success = await sendEmail(selectedTemplate, customTemplateId, mockData)
         if (success) {
             // Limpar formulário após envio bem-sucedido
             setSelectedTemplate('')
+            setCustomTemplateId('')
             setMockData(null)
             handleCancelEdit()
         }
@@ -136,6 +144,8 @@ function EmailSenderContent() {
                                 onTemplateChange={setSelectedTemplate}
                                 availableTemplates={availableTemplates}
                                 isLoadingTemplates={isLoadingTemplates}
+                                customTemplateId={customTemplateId}
+                                onCustomTemplateIdChange={setCustomTemplateId}
                             />
 
                             <ActionButtons
@@ -150,6 +160,7 @@ function EmailSenderContent() {
                     {/* Card de Dados Mockados */}
                     <MockDataCard
                         mockData={mockData}
+                        selectedTemplate={selectedTemplate}
                         isEditingJson={isEditingJson}
                         jsonString={jsonString}
                         jsonError={jsonError}
