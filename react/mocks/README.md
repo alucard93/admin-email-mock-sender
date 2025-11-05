@@ -1,86 +1,69 @@
-# 📧 Templates de E-mail Mockados
+# 📧 Mock Data para Templates de E-mail
 
-Esta pasta contém templates de e-mail mockados para teste no sistema de envio de e-mails VTEX.
+Esta pasta contém os dados mockados para diferentes templates de e-mail da VTEX.
 
 ## 📁 Estrutura
 
 ```
 mocks/
-├── index.ts                    # Exportações principais
-├── templates/
-│   ├── index.ts               # Gerenciador de templates
-│   ├── vtexid_check_email.ts  # Template: Access key
-│   └── [outros templates...]
-└── README.md                  # Este arquivo
+├── README.md              # Este arquivo
+├── TEMPLATE_GUIDE.md      # 📚 Guia completo de criação de templates
+├── index.ts               # Exportações principais
+├── examples.ts            # Exemplos de uso
+└── templates/             # Templates específicos
+    ├── index.ts           # Índice dos templates
+    ├── vtexid_check_email.ts     # Access Key
+    └── vtexcommerce_new_order.ts # Order Confirmation
 ```
 
-## 🛠️ Como Adicionar Novos Templates
-
-### 1. Criar o arquivo do template
-
-Crie um novo arquivo em `templates/` com o nome do template ID:
+## 🎯 Como Usar
 
 ```typescript
-// templates/novo_template.ts
-import faker from 'faker'
+import { getCompleteTemplateData } from './mocks'
 
-export interface NovoTemplateData {
-  // Defina a interface com base no JSON fornecido
-  to: Array<{ name: string; email: string }>
-  // ... outros campos
-}
-
-export const generateNovoTemplateMockData = (): NovoTemplateData => {
-  return {
-    // Gere dados mockados usando faker
-  }
-}
-
-export const novoTemplate = {
-  id: 'novo_template',
-  name: 'Nome do Template',
-  friendlyName: 'Nome Amigável',
-  description: 'Descrição do template',
-  category: 'Categoria',
-  generateMockData: generateNovoTemplateMockData,
-  generateSubject: (data: NovoTemplateData) => 'Subject gerado',
-  getRecipient: (data: NovoTemplateData) => data.to[0]?.email || ''
-}
-
-export default novoTemplate
+// Obter dados completos de um template
+const templateData = getCompleteTemplateData('vtexid_check_email')
+console.log(templateData.mockData)    // Dados mockados
+console.log(templateData.subject)     // Subject gerado
+console.log(templateData.recipient)   // Email do destinatário
 ```
 
-### 2. Adicionar ao índice
+## ✨ Templates Disponíveis
 
-Adicione o import e o template ao array em `templates/index.ts`:
+- **vtexid_check_email** - Chave de acesso para autenticação
+- **vtexcommerce-new-order** - Confirmação de pedido
 
-```typescript
-import novoTemplate from './novo_template'
+## 📝 Adicionar Novos Templates
 
-export const emailTemplates: EmailTemplate[] = [
-  accessKeyTemplate,
-  novoTemplate, // <- Adicione aqui
-]
-```
+### 📚 Guia Completo
+Para instruções detalhadas sobre como criar novos templates, consulte:
 
-### 3. Testar
+**[📖 TEMPLATE_GUIDE.md](./TEMPLATE_GUIDE.md)**
 
-O template automaticamente aparecerá na lista do componente EmailSender.
+### 🚀 Processo Rápido
 
-## 📋 Templates Disponíveis
+1. **Encontre o template** em `/admin/message-center#/templates`
+2. **Copie o ID** da URL (ex: `vtex-payment-approved`)
+3. **Crie o arquivo** `templates/vtex_payment_approved.ts`
+4. **Implemente** seguindo os templates existentes como referência
+5. **Registre** no arquivo `templates/index.ts`
+6. **Teste** localmente e abra um PR!
 
-### vtexid_check_email (Access key)
-- **Descrição**: Envio de chave de acesso para autenticação
-- **Categoria**: Authentication
-- **Dados mockados**: Chave de acesso, locale, user agent, informações da conta
+## 🤝 Contribuindo
 
-## 🎯 Próximos Templates
+Sua contribuição ajuda toda a comunidade VTEX! Para adicionar novos templates:
 
-Adicione aqui a lista dos próximos templates que serão implementados...
+1. **Leia o guia completo**: [TEMPLATE_GUIDE.md](./TEMPLATE_GUIDE.md)
+2. **Siga a estrutura** dos templates existentes
+3. **Teste localmente** com `vtex link`
+4. **Abra um Pull Request** com descrição detalhada
 
-## 💡 Dicas
+**Templates mais procurados para implementar:**
+- `vtex-payment-approved` - Pagamento Aprovado
+- `vtex-order-shipped` - Pedido Enviado  
+- `vtex-password-reset` - Reset de Senha
+- `vtex-abandoned-cart` - Carrinho Abandonado
 
-- Use o faker para gerar dados realistas
-- Mantenha a consistência nos nomes dos campos
-- Teste sempre após adicionar um novo template
-- Documente campos específicos quando necessário
+---
+
+**📚 Documentação completa:** [TEMPLATE_GUIDE.md](./TEMPLATE_GUIDE.md)
