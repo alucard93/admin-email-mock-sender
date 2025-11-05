@@ -2,6 +2,20 @@
 
 Uma aplicação VTEX IO para envio de e-mails padrões da VTEX com dados mockados através de uma interface administrativa moderna.
 
+## 🚀 Instalação Rápida
+
+Para instalar a aplicação diretamente na sua conta VTEX sem precisar clonar o repositório:
+
+```bash
+vtex install corebiz.admin-email-mock-sender
+```
+
+Após a instalação, acesse o aplicativo em:
+- **Admin VTEX** → **Apps** → **Corebiz Email Mock Sender**
+- Ou diretamente: `https://seu-account.myvtex.com/admin/apps/corebiz.admin-email-mock-sender/`
+
+> 💡 **Dica:** A aplicação é **100% gratuita** e não requer nenhuma configuração adicional!
+
 ## 📧 Funcionalidades
 
 ### Tela de Envio de E-mails
@@ -327,5 +341,24 @@ Alguns templates VTEX comuns que podem ser adicionados:
    - Título descritivo: `feat: add template vtex-payment-confirmation`
    - Descrição explicando o template
    - Screenshots da aplicação funcionando
+
+## 🛠️ Desenvolvimento Local
+
+Para contribuir com o projeto ou fazer modificações:
+
+### 1. Clone o repositório
+```bash
+git clone https://github.com/gabrielstc/admin-email-mock-sender.git
+cd admin-email-mock-sender
+```
+
+### 2. Execute em modo de desenvolvimento
+```bash
+vtex link
+```
+
+### 3. Acesse a aplicação
+- Admin: `https://seu-workspace--seu-account.myvtex.com/admin/`
+- Aplicação: **Apps** → **Corebiz Email Mock Sender**
 
 **Sua contribuição ajuda toda a comunidade VTEX! 🚀**
