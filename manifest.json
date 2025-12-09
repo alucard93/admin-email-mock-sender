@@ -1,7 +1,7 @@
 {
   "name": "admin-email-mock-sender",
   "vendor": "wicommpartnerbr",
-  "version": "0.0.1",
+  "version": "1.0.2",
   "title": "Email Mock Sender",
   "description": "Admin interface for sending standard VTEX emails with mocked data",
   "mustUpdateAt": "2025-11-28",
